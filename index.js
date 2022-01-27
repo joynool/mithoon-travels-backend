@@ -19,6 +19,33 @@ async function run ()
         const database = client.db('mithoon-travels');
         const usersCollect = database.collection('users');
         const blogsCollect = database.collection('blogs');
+        const spotCollect = database.collection('spot');
+
+        app.get('/blogs', async (req, res) =>
+        {
+            const cursor = blogsCollect.find({});
+            const page = req.query.page;
+            const size = parseInt(req.query.size);
+            let blogs;
+            const count = await cursor.count();
+            if (page) {
+                blogs = await cursor.skip(page * size).limit(size).toArray();
+            } else {
+                blogs = await cursor.toArray();
+            }
+
+            res.send({
+                count,
+                blogs: blogs
+            });
+        });
+
+        app.get('/spot', async (req, res) =>
+        {
+            const cursor = spotCollect.find({});
+            const result = await cursor.toArray();
+            res.send(result);
+        });
 
         /*------------------------------------------------
                 Users data get, post and Admin put API
