@@ -22,6 +22,9 @@ async function run ()
         const blogsCollect = database.collection('blogs');
         const spotCollect = database.collection('spot');
 
+        /*------------------------------------------------
+                Blogs data CRUD API implemented
+        --------------------------------------------------*/
         app.get('/blogs', async (req, res) =>
         {
             const cursor = blogsCollect.find({});
@@ -54,6 +57,27 @@ async function run ()
             const blogs = req.body;
             const result = await blogsCollect.insertOne(blogs);
             res.json(result);
+        });
+
+        app.put('/blogs/:id', async (req, res) =>
+        {
+            const id = req.params.id;
+            const updatedBlog = req.body;
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: {
+                    title: updatedBlog.title,
+                    description: updatedBlog.description,
+                    img: updatedBlog.img,
+                    duration: updatedBlog.duration,
+                    price: updatedBlog.price,
+                    name: updatedBlog.name,
+                    email: updatedBlog.email
+                }
+            };
+            const result = await usersCollection.updateOne(filter, updateDoc, options)
+            res.json(result)
         });
 
         app.delete('/blogs/:id', async (req, res) =>
