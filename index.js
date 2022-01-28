@@ -76,7 +76,7 @@ async function run ()
                     email: updatedBlog.email
                 }
             };
-            const result = await usersCollection.updateOne(filter, updateDoc, options)
+            const result = await blogsCollect.updateOne(filter, updateDoc, options)
             res.json(result)
         });
 
