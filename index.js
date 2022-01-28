@@ -56,6 +56,14 @@ async function run ()
             res.json(result);
         });
 
+        app.delete('/blogs/:id', async (req, res) =>
+        {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await blogsCollect.deleteOne(query);
+            res.json(result);
+        });
+
         app.get('/spot', async (req, res) =>
         {
             const cursor = spotCollect.find({});
