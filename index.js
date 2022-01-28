@@ -49,6 +49,13 @@ async function run ()
             res.send(result);
         });
 
+        app.post('/blogs', async (req, res) =>
+        {
+            const blogs = req.body;
+            const result = await blogsCollect.insertOne(blogs);
+            res.json(result);
+        });
+
         app.get('/spot', async (req, res) =>
         {
             const cursor = spotCollect.find({});
